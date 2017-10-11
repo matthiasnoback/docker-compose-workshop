@@ -190,7 +190,11 @@ This will make the image publicly available on [Docker Hub](http://hub.docker.co
 
 # Deploying services on a single node
 
-Once you have pushed your custom image to Docker Hub, other servers can start using them. If you've followed the instructions in the [`README.md`](../README.md) file of this project, you already have a virtual machine called `demo-server` up and running. To see if this is the case, run:
+Once you have pushed your custom image to Docker Hub, other servers can start using them.
+
+## Step 1 (using VirtualBox on Linux, Mac or Windows Home Edition)
+
+If you've followed the instructions in the [`README.md`](../README.md) file of this project, you already have a virtual machine called `demo-server` up and running. To see if this is the case, run:
 
 ```
 docker-machine ls
@@ -216,7 +220,7 @@ You should see an empty list. The effect of running the `eval` command previousl
 docker-compose pull
 ```
 
-Next, we can start the services:
+Before we start the services, we need to make sure that we don't use any bind-mount volumes (e.g. `./db:data`). For now, comment those out in `docker-compose.yml`. Then, run:
 
 ```
 docker-compose up -d
@@ -231,6 +235,69 @@ Finally, to bring back the focus of the Docker client to the host machine, run:
 ```
 eval $(docker-machine env -u)
 ```
+
+## Step 1 (using Play With Docker for Windows Professional Edition or if you like it better than Virtualbox)
+
+Go to [labs.play-with-docker.com](http://labs.play-with-docker.com/). Click "Add new instance".
+
+First, make sure your `docker-compose.yml` is ready to be used for deploying services remotely:
+
+1. Comment out all the lines describing local bind-mount volumes (e.g. `./db:/data`).
+2. Make sure you only use double quotes in your `docker-compose.yml` file. 
+
+Now in the PWD terminal, type:
+
+```
+echo '
+``` 
+
+Then paste the contents of your `docker-compose.yml` file. Then add:
+
+```
+` > docker-compose.yml
+```
+
+Alternatively you could run `vi docker-compose.yml` and paste it there. However, you'd first need to go into *paste mode* (I know, right???) by typing in: `:set paste`.
+
+Try `cat docker-compose.yml` and verify that it looks good.
+
+Back on the terminal you can run:
+
+```
+docker-compose pull
+```
+
+This pulls in all the required images. Finally, you can start the services by running:
+
+```
+docker-compose up -d --no-build
+```
+
+Verify that everything works by running:
+
+```
+docker-compose ps
+```
+
+Somewhere on the screen a link will pop up with the port number which you can use to visit the website and see the visitor counter in action.
+
+## Step 2: Taking care of persistence
+
+Try shutting down the services (like with a reboot of the system):
+
+```
+docker-compose down
+```
+
+Then start the services again:
+
+```
+docker-compose up -d
+```
+
+If you visit the website again, you'll notice that the visitor counter has been reset. In order to make the data persistent, we need to bind-mount a volume from the host machine. Using Virtualbox you could use `/home/docker` and mount it as `/data` inside the `redis` container. Using Play With Docker you could use `/home`.
+
+Restart the services several times and see if their data would survive an outage.
 
 # Using separate configuration files
 
