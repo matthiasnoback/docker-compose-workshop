@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    webserver:
+        build:
+            context: ./
+            dockerfile: docker/webserver/Dockerfile
+        volumes:
+            - ./web/:/var/www/html/
+
+    redis:
+        volumes:
+            - ./db:/data

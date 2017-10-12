@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    webserver:
+        image: matthiasnoback/docker-compose-workshop-webserver
+        ports:
+            - 80:80
+        depends_on:
+            - redis
+
+    redis:
+        image: redis:3.2-alpine
+        command: redis-server --appendonly yes
