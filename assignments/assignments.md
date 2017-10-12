@@ -314,3 +314,7 @@ docker-compose -f docker-compose.prod.yml -f docker-compose.dev.yml push
 ```
 
 > Of course, you can simply these commands by putting the first part of these commands in a Bash variable, or writing build scripts or Makefiles for them.
+
+# Add a network configuration
+
+Just like you would run `docker network create website` and explicitly add containers to this network by using `docker run --network website ...`, you can also configure networks in `docker-compose.yml` and add services to them. `docker-compose` will automatically create and remove these networks for you. Take a look at the [documentation](https://docs.docker.com/compose/compose-file/#networks) to figure out how to define the `website` network in your `docker-compose.yml` and add the services to this network.
