@@ -7,7 +7,15 @@ services:
             - 80:80
         depends_on:
             - redis
+        networks:
+            - website
 
     redis:
         image: redis:3.2-alpine
         command: redis-server --appendonly yes
+        networks:
+            - website
+
+networks:
+    website:
+        driver: bridge
