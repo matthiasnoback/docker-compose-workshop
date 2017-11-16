@@ -313,7 +313,7 @@ docker-compose -f docker-compose.prod.yml -f docker-compose.dev.yml build
 docker-compose -f docker-compose.prod.yml -f docker-compose.dev.yml push
 ```
 
-> Of course, you can simply these commands by putting the first part of these commands in a Bash variable, or writing build scripts or Makefiles for them.
+> Of course, you can simplify these commands by putting the first part of these commands in a Bash variable, or writing build scripts or Makefiles for them.
 
 # Add a network configuration
 
