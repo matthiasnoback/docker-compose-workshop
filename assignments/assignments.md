@@ -158,6 +158,20 @@ docker-compose up -d redis
 
 Visit the site again, and you'll find that no data was lost in the process. Don't forget to take a look at the rather interesting file format of the Redis database file in `./db`. 
 
+# Named volumes
+
+To make the solution more "portable" you shouldn't use a bind-mount volume, but a "named volume" instead. This is a volume managed by Docker. The files stored in this volume will be persisted on the host file system, but in a directory managed by Docker. Update the configuration to look like this. Now start and stop the services a few times to verify that the Redis database is indeed persistent.  
+
+```
+services:
+    ...
+    volumes:
+        - redis-db:/data
+    
+volumes:
+    redis-db:
+```
+
 # Pushing service images
 
 Currently we're building one image (for the `webserver` service). In order to deploy this - theoretically - production-ready image to the `demo-server` virtual machine, we should first push it to an image registry. In order to do so, we need to provide a proper image name for it in `docker-compose.yml`. This name should consist of your Docker Hub username, an image name, and optionally a tag name, e.g.:
